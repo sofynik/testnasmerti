@@ -215,11 +215,204 @@ document.addEventListener("DOMContentLoaded", () => {
   forteenBtn.addEventListener('click', () => {
       forteenText.textContent = quotes[Math.floor(Math.random() * quotes.length)]
   })
+  let fifteenItem = document.querySelector("[data-js='t15-item']")
+  let fifteenArea = document.querySelector("[data-js='t15-area']")
+  let coords15 = document.querySelector("[data-js='t15-coords']")
+
+  let isDraggable = false
+  let offsetX = 0
+  let offsetY = 0
+
+  fifteenItem.addEventListener('pointerdown', (e) => {
+    isDraggable = true
+
+    const rect = fifteenItem.getBoundingClientRect()
+
+    offsetX = e.clientX - rect.left
+    offsetY = e.clientY - rect.top
+
+    fifteenItem.setPointerCapture(e.pointerId)
+  })
+
+  document.addEventListener('pointermove', (e) => {
+    if (!isDraggable) return
+    const parentRect = fifteenItem.parentElement.getBoundingClientRect()
+    const itemRect = fifteenItem.getBoundingClientRect()
+
+    let left = e.clientX - parentRect.left - offsetX
+    let top = e.clientY - parentRect.top - offsetY
+
+    left = Math.max(0, Math.min(left, parentRect.width - itemRect.width))
+    top = Math.max(0, Math.min(top, parentRect.height - itemRect.height))
+    coords15.textContent = `x: ${Math.floor(left)}, y: ${Math.floor(top)}`
+    fifteenItem.style.left = `${left}px`
+    fifteenItem.style.top = `${top}px`
+  })
+  window.addEventListener('pointerup', () => {
+      isDraggable = false
+  })
 
   let box16 = document.querySelector("[data-js='t16-box']")
   let btn16 = document.querySelector("[data-js='t16-animate']")
 
   btn16.addEventListener('click', () => {
       box16.classList.add('anim')
-})
+  })
+
+  function getRandomCoord(max) {
+    return Math.floor(Math.random() * max);
+  }
+
+  let seventeen= document.querySelector("[data-js='t17-area']")
+  const mainSize = seventeen.getBoundingClientRect()
+  setInterval(() =>{
+    let newCube = document.createElement(`div`)
+    let left = getRandomCoord(mainSize.width-100)
+    let top = getRandomCoord(mainSize.height-100)
+    newCube.style.left = `${left}px`
+    newCube.style.top = `${top}px`
+    newCube.classList.add('cube')
+    seventeen.append(newCube)
+  }, 1000)
+
+  
+  let eighteen = document.querySelector("[data-js='t18-area']")
+  let size = eighteen.getBoundingClientRect()
+  let sizeWidth = size.width
+
+  setInterval(createDiv, 2500)
+  function createDiv(){
+    let newDiv = document.createElement("div")
+    newDiv.classList.add("cube")
+    eighteen.append(newDiv)
+    newDiv.style.left = `${sizeWidth}px`
+    requestAnimationFrame(() => animateDiv(newDiv))
+  }
+
+  function animateDiv(newDiv){
+    let currentLeft = parseInt(newDiv.style.left)
+    let nextLeft = currentLeft - 1
+    newDiv.style.left = `${nextLeft}px`
+    if (nextLeft + newDiv.offsetWidth <=0){
+      newDiv.remove()
+      return
+    }
+    requestAnimationFrame(() => animateDiv(newDiv))
+  }
+
+  function getRandomInt(max) {
+        return Math.floor(Math.random() * max);
+    }
+  
+  let t19Area = document.querySelector("[data-js='t19-area']")
+  let t19AreaHeight = t19Area.getBoundingClientRect().height
+  let t19AreaWidth = t19Area.getBoundingClientRect().width
+
+  setInterval(createDivAndMove19, 2000);
+
+  function createDivAndMove19() {
+      let newDiv19 = document.createElement("div");
+      newDiv19.classList.add('cube')
+      t19Area.append(newDiv19);
+      let randomHeight = getRandomInt(t19AreaHeight - 100);
+      newDiv19.style.top = `${randomHeight}px`;
+      newDiv19.style.left = `${t19AreaWidth}px`;
+      requestAnimationFrame(() => animateDiv19(newDiv19));
+  }
+  function animateDiv19(newDiv19) {
+      let currentLeft = parseInt(newDiv19.style.left);
+      let nextLeft = currentLeft - 1;
+      newDiv19.style.left = `${nextLeft}px`;
+      if (nextLeft + newDiv19.offsetWidth <= 0) {
+          newDiv19.remove();
+          return;
+      }
+
+      requestAnimationFrame(() => animateDiv19(newDiv19));
+  }
+
+  let twentySpace = document.querySelector("[data-js='t20-area']")
+  let twentySpaceHeight = twentySpace.getBoundingClientRect().height
+  let twentySpaceWidth = twentySpace.getBoundingClientRect().width
+  let counter20 = document.querySelector("[data-js='t20-score']")
+
+  setInterval(createDivAndMove20, 5000);
+
+  function createDivAndMove20() {
+      let newDiv20 = document.createElement("div");
+      newDiv20.classList.add('cube')
+      twentySpace.append(newDiv20);
+      let randomHeight = getRandomInt(twentySpaceHeight - 100);
+      newDiv20.style.top = `${randomHeight}px`;
+      newDiv20.style.left = `${twentySpaceWidth}px`;
+      requestAnimationFrame(() => animateDiv20(newDiv20));
+      newDiv20.addEventListener('click', () => {
+          newDiv20.remove()
+          counter20.textContent++
+      })
+  }
+  function animateDiv20(newDiv20) {
+      let currentLeft = parseInt(newDiv20.style.left);
+      let nextLeft = currentLeft - 1;
+      newDiv20.style.left = `${nextLeft}px`;
+      if (nextLeft + newDiv20.offsetWidth <= 0) {
+          newDiv20.remove();
+          return;
+      }
+
+      requestAnimationFrame(() => animateDiv20(newDiv20));
+  }
+
+  let twentyOneSpace = document.querySelector("[data-js='t21-area']")
+  let twentyOneSpaceHeight = twentyOneSpace.getBoundingClientRect().height
+  let twentyOneSpaceWidth = twentyOneSpace.getBoundingClientRect().width
+  let counter21 = document.querySelector("[data-js='t21-score']")
+  let lives21 = document.querySelector("[data-js='t21-lives']")
+  let gameOver21 = document.querySelector("[data-js='t21-game-over']")
+  let btnRestart21 = document.querySelector("[data-js='t21-restart']")
+
+  let interval21 = setInterval(createDivAndMove21, 2000);
+  let isGameOver21 = false;
+
+  function createDivAndMove21() {
+      let newDiv21 = document.createElement("div");
+      newDiv21.classList.add('cube')
+      twentyOneSpace.append(newDiv21);
+      let randomHeight = getRandomInt(twentyOneSpaceHeight - 100);
+      newDiv21.style.top = `${randomHeight}px`;
+      newDiv21.style.left = `${twentyOneSpaceWidth}px`;
+      requestAnimationFrame(() => animateDiv21(newDiv21));
+      newDiv21.addEventListener('click', () => {
+          newDiv21.remove()
+          counter21.textContent++
+      })
+  }
+  function animateDiv21(newDiv21) {
+      if (isGameOver21) return;
+      let currentLeft = parseInt(newDiv21.style.left)
+      let nextLeft = currentLeft - 1;
+      newDiv21.style.left = `${nextLeft}px`
+      if (nextLeft + newDiv21.offsetWidth <= 0) {
+          newDiv21.remove();
+          lives21.textContent--
+
+          if (lives21.textContent === "0") {
+              isGameOver21 = true;
+              gameOver21.hidden = false
+              clearInterval(interval21);
+              btnRestart21.addEventListener('click', () => {
+                  isGameOver21 = false;
+                  counter21.textContent = "0"
+                  lives21.textContent = "3"
+                  gameOver21.hidden = true
+                  document.querySelectorAll("[data-js='t21-area'] .cube")
+                      .forEach(cube => cube.remove());
+                  clearInterval(interval21);
+                  interval21 = setInterval(createDivAndMove21, 5000);
+              })
+          }
+          return;
+      }
+      requestAnimationFrame(() => animateDiv21(newDiv21));
+  }
 });
