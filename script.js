@@ -388,31 +388,22 @@ document.addEventListener("DOMContentLoaded", () => {
       })
   }
   function animateDiv21(newDiv21) {
-      if (isGameOver21) return;
-      let currentLeft = parseInt(newDiv21.style.left)
-      let nextLeft = currentLeft - 1;
-      newDiv21.style.left = `${nextLeft}px`
-      if (nextLeft + newDiv21.offsetWidth <= 0) {
-          newDiv21.remove();
-          lives21.textContent--
+    if (isGameOver21) return;
+    if (!newDiv21.isConnected) return; 
 
-          if (lives21.textContent === "0") {
-              isGameOver21 = true;
-              gameOver21.hidden = false
-              clearInterval(interval21);
-              btnRestart21.addEventListener('click', () => {
-                  isGameOver21 = false;
-                  counter21.textContent = "0"
-                  lives21.textContent = "3"
-                  gameOver21.hidden = true
-                  document.querySelectorAll("[data-js='t21-area'] .cube")
-                      .forEach(cube => cube.remove());
-                  clearInterval(interval21);
-                  interval21 = setInterval(createDivAndMove21, 5000);
-              })
-          }
-          return;
-      }
-      requestAnimationFrame(() => animateDiv21(newDiv21));
+    let currentLeft = parseInt(newDiv21.style.left);
+    let nextLeft = currentLeft - 1;
+    newDiv21.style.left = `${nextLeft}px`;
+
+    if (nextLeft + newDiv21.offsetWidth <= 0) {
+        newDiv21.remove();
+        lives21.textContent--;
+
+        if (lives21.textContent === "0") {
+
+        }
+        return;
+    }
+    requestAnimationFrame(() => animateDiv21(newDiv21));
   }
 });
